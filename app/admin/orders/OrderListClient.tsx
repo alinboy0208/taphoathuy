@@ -25,11 +25,8 @@ export default function OrderListClient({
   updateOrderStatus: (formData: FormData) => void;
 }) {
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
-  // 👉 Mặc định tự bật chuông ngay khi vào trang
   const [soundEnabled, setSoundEnabled] = useState(true);
   const router = useRouter();
-
-  // Lưu mã đơn hàng mới nhất hiện tại làm mốc
   const lastKnownOrderIdRef = useRef<string>(orders[0]?.id || "");
 
   useEffect(() => {
@@ -37,14 +34,10 @@ export default function OrderListClient({
       lastKnownOrderIdRef.current = orders[0].id;
     }
   }, [orders]);
-
-  // 1. Tự động yêu cầu quyền thông báo màn hình khi vừa tải trang
   useEffect(() => {
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
-
-    // Tự động mở khóa audio khi người dùng tương tác vào trang
     const unlockAudio = () => {
       const audio = new Audio("/ding.mp3");
       audio.load();
@@ -55,7 +48,6 @@ export default function OrderListClient({
     return () => window.removeEventListener("click", unlockAudio);
   }, []);
 
-  // 2. Vòng lặp quét đơn hàng mới mỗi 5 giây
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
@@ -67,23 +59,18 @@ export default function OrderListClient({
         if (data.hasNew && data.latestOrder) {
           lastKnownOrderIdRef.current = data.latestOrder.id;
 
-          // Phát chuông nếu đang bật
           if (soundEnabled) {
             const audio = new Audio("/ding.mp3");
             audio.play().catch((err) => {
               console.log("Cần tương tác với trang để phát âm thanh:", err);
             });
           }
-
-          // Bắn thông báo pop-up máy tính
           if ("Notification" in window && Notification.permission === "granted") {
             new Notification(`🔔 ĐƠN HÀNG MỚI!`, {
               body: `${data.latestOrder.customerName} vừa đặt đơn ${data.latestOrder.totalAmount?.toLocaleString()}đ`,
               icon: "/favicon.ico",
             });
           }
-
-          // Cập nhật danh sách đơn
           router.refresh();
         }
       } catch (err) {
@@ -100,8 +87,6 @@ export default function OrderListClient({
       window.print();
     }, 200);
   };
-
-  // CHỈ LỌC VÀ TÍNH TIỀN CHO ĐƠN ĐÃ GIAO THÀNH CÔNG (COMPLETED)
   const deliveredOrders = orders.filter((o) => o.status === "COMPLETED");
   const totalDeliveredRevenue = deliveredOrders.reduce(
     (sum, o) => sum + (o.totalAmount || 0),
@@ -110,7 +95,6 @@ export default function OrderListClient({
 
   return (
     <div className="space-y-5">
-      {/* 1. KHU VỰC THỐNG KÊ (CHỈ TÍNH ĐƠN ĐÃ GIAO THÀNH CÔNG) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between">
           <div>
@@ -140,8 +124,6 @@ export default function OrderListClient({
           </div>
         </div>
       </div>
-
-      {/* 2. THANH TRẠNG THÁI CHUÔNG */}
       <div className="bg-white p-3.5 rounded-2xl border border-slate-200/80 flex flex-col sm:flex-row justify-between sm:items-center gap-3 shadow-xs">
         <div className="flex items-center gap-2.5">
           <span
@@ -161,8 +143,6 @@ export default function OrderListClient({
             </span>
           </span>
         </div>
-
-        {/* Nút bật/tắt chuông */}
         <button
           type="button"
           onClick={() => setSoundEnabled(!soundEnabled)}
@@ -185,8 +165,6 @@ export default function OrderListClient({
           )}
         </button>
       </div>
-
-      {/* 3. DANH SÁCH CÁC ĐƠN HÀNG */}
       {orders.length === 0 ? (
         <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center text-slate-400 shadow-xs flex flex-col items-center justify-center">
           <Package className="w-10 h-10 text-slate-300 mb-2" />
@@ -211,7 +189,6 @@ export default function OrderListClient({
                 }`}
               >
                 <div className="space-y-2 flex-1">
-                  {/* Tên khách, số điện thoại & huy hiệu trạng thái */}
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-extrabold text-base sm:text-lg text-slate-800">
                       {order.customerName}
@@ -251,24 +228,18 @@ export default function OrderListClient({
                       )}
                     </span>
                   </div>
-
-                  {/* Địa chỉ */}
                   <div className="text-xs sm:text-sm text-slate-600 flex items-start gap-1.5">
                     <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                     <span>
                       Địa chỉ: <strong className="text-slate-800 font-semibold">{order.address}</strong>
                     </span>
                   </div>
-
-                  {/* Ghi chú */}
                   {order.note && (
                     <div className="text-xs text-amber-800 bg-amber-50/70 p-2 rounded-lg italic flex items-center gap-1.5 border border-amber-100">
                       <FileText className="w-3.5 h-3.5 shrink-0 text-amber-600" />
                       <span>Ghi chú: {order.note}</span>
                     </div>
                   )}
-
-                  {/* Danh sách các món trong đơn */}
                   <div className="mt-3 bg-slate-50/80 rounded-xl p-3 border border-slate-100 text-xs sm:text-sm">
                     <ul className="space-y-1 text-slate-700">
                       {order.items?.map((item: any) => (
@@ -289,7 +260,6 @@ export default function OrderListClient({
                   </div>
                 </div>
 
-                {/* Tác vụ: In bill, Hoàn thành và Hủy đơn */}
                 <div className="flex flex-row md:flex-col justify-end gap-2.5 shrink-0 self-end md:self-center">
                   <button
                     type="button"
@@ -299,11 +269,8 @@ export default function OrderListClient({
                     <Printer className="w-3.5 h-3.5" />
                     <span>In Bill</span>
                   </button>
-
-                  {/* CHỈ HIỂN THỊ NÚT HOÀN THÀNH & HỦY ĐƠN KHI ĐANG PENDING */}
                   {isPending && (
                     <div className="flex flex-row md:flex-col gap-2.5">
-                      {/* Nút Hoàn thành (Gửi COMPLETED) */}
                       <form action={updateOrderStatus}>
                         <input type="hidden" name="orderId" value={order.id} />
                         <input type="hidden" name="status" value="COMPLETED" />
@@ -315,8 +282,6 @@ export default function OrderListClient({
                           <span>Hoàn thành</span>
                         </button>
                       </form>
-
-                      {/* Nút Hủy đơn (Hủy là chốt luôn, gửi CANCELLED) */}
                       <form
                         action={updateOrderStatus}
                         onSubmit={(e) => {
@@ -343,8 +308,6 @@ export default function OrderListClient({
           })}
         </div>
       )}
-
-      {/* Khung in bill nhiệt 80mm (Giữ nguyên vẹn thiết kế ban đầu) */}
       {selectedOrder && (
         <div id="print-bill" className="hidden">
           <div className="w-[80mm] p-2 text-xs font-mono text-black leading-tight">
