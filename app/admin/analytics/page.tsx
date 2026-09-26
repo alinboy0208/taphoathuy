@@ -14,8 +14,6 @@ export default async function AdminAnalyticsPage() {
       order: true,
     },
   });
-
-  // 1. Tính tổng doanh thu và tiền vốn toàn thời gian
   const totalRevenue = completedItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
@@ -25,8 +23,6 @@ export default async function AdminAnalyticsPage() {
     0
   );
   const totalProfit = totalRevenue - totalCost;
-
-  // 2. Gom dữ liệu doanh thu & lợi nhuận theo từng tháng (T1, T2,... T12)
   const monthlyStatsMap: Record<string, { revenue: number; profit: number }> = {};
 
   completedItems.forEach((item) => {
@@ -43,15 +39,11 @@ export default async function AdminAnalyticsPage() {
     monthlyStatsMap[monthKey].revenue += itemRevenue;
     monthlyStatsMap[monthKey].profit += itemRevenue - itemCost;
   });
-
-  // Chuyển Map thành mảng để Recharts đọc
   const chartData = Object.entries(monthlyStatsMap).map(([month, data]) => ({
     month,
     revenue: data.revenue,
     profit: data.profit,
   }));
-
-  // 3. Top sản phẩm bán chạy nhất
   const productStatsMap: Record<
     string,
     { name: string; quantity: number; revenue: number }
@@ -88,8 +80,6 @@ export default async function AdminAnalyticsPage() {
             ← Về Danh Sách Đơn
           </a>
         </header>
-
-        {/* 3 Thẻ chỉ số tổng */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="bg-white p-5 rounded-xl border shadow-sm">
             <div className="text-xs font-semibold text-slate-500 uppercase">Tổng Doanh Thu</div>
@@ -113,7 +103,6 @@ export default async function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* KHUNG BIỂU ĐỒ ĐƯỜNG (LINE GRAPH) */}
         <div className="bg-white rounded-xl border shadow-sm p-5">
           <h2 className="font-bold text-lg text-slate-800 flex items-center gap-2">
              <TrendingUp className="w-5 h-5 text-indigo-600" />
@@ -125,7 +114,6 @@ export default async function AdminAnalyticsPage() {
           <RevenueChart data={chartData} />
         </div>
 
-        {/* Bảng Top bán chạy */}
         <div className="bg-white rounded-xl border shadow-sm p-5">
           <h3 className="font-bold text-base text-slate-800 mb-4">
              Top Sản Phẩm Bán Chạy Nhất
