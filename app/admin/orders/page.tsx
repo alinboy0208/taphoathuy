@@ -6,7 +6,6 @@ import OrderListClient from "./OrderListClient";
 import { Package, TrendingUp, LogOut } from "lucide-react";
 
 export default async function AdminOrdersPage() {
-  // Lấy danh sách đơn hàng mới nhất
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     include: {
@@ -17,8 +16,6 @@ export default async function AdminOrdersPage() {
       },
     },
   });
-
-  // Action cập nhật trạng thái đơn (Hoàn thành / Hủy)
   async function updateOrderStatus(formData: FormData) {
     "use server";
     const orderId = formData.get("orderId") as string;
@@ -32,8 +29,6 @@ export default async function AdminOrdersPage() {
     revalidatePath("/admin/orders");
     revalidatePath("/admin/analytics");
   }
-
-  // Action đăng xuất khỏi phiên Admin
   async function logout() {
     "use server";
     const cookieStore = await cookies();
@@ -43,12 +38,8 @@ export default async function AdminOrdersPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/70 pb-20">
-      {/* Header thanh lịch, hiện đại */}
-     {/* Header Admin thiết kế chuyên nghiệp & hiện đại */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 shadow-xs mb-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          
-          {/* Cột trái: Tiêu đề & Trạng thái hệ thống */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 shadow-xs shrink-0">
               <Package className="w-5 h-5 stroke-[2.2]" />
@@ -68,10 +59,7 @@ export default async function AdminOrdersPage() {
               </p>
             </div>
           </div>
-
-          {/* Cột phải: Thanh công cụ điều hướng & Thoát */}
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Nhóm nút điều hướng trang quản trị */}
             <div className="flex items-center p-1 bg-slate-100/80 border border-slate-200/60 rounded-2xl gap-1">
               <a
                 href="/admin/products"
@@ -91,8 +79,6 @@ export default async function AdminOrdersPage() {
             </div>
 
             <div className="h-6 w-[1px] bg-slate-200 mx-1 hidden sm:block"></div>
-
-            {/* Nút Đăng xuất */}
             <form action={logout}>
               <button
                 type="submit"
