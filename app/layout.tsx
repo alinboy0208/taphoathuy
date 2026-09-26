@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-
-// Khai báo font Montserrat
 const montserrat = Montserrat({
   weight: ["400", "500", "600", "700", "800"],
   subsets: ["vietnamese", "latin"],
@@ -33,7 +31,6 @@ export default function RootLayout({
       className={`${montserrat.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      {/* Đưa montserrat.className trực tiếp vào body và bỏ font-sans */}
       <body
         className={`${montserrat.className} min-h-full flex flex-col`}
         suppressHydrationWarning
