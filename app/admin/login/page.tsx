@@ -6,14 +6,14 @@ export default function AdminLoginPage() {
   async function handleLogin(formData: FormData) {
     "use server";
     const pin = formData.get("pin") as string;
-    const correctPin = process.env.ADMIN_PIN || "taphoa123"; // Hoặc mã PIN bạn đã cài
+    const correctPin = process.env.ADMIN_PIN || "taphoa123";
 
     if (pin === correctPin) {
       const cookieStore = await cookies();
       cookieStore.set("admin_session", "authenticated", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 24 * 7, // Lưu đăng nhập 7 ngày
+        maxAge: 60 * 60 * 24 * 7, 
         path: "/",
       });
       redirect("/admin/orders");
@@ -24,13 +24,10 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden selection:bg-amber-500 selection:text-white">
-      {/* Vòng sáng hào quang mờ phía sau tạo chiều sâu */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative w-full max-w-sm">
-        {/* Khung Card Glassmorphism tối giản và sang trọng */}
         <div className="bg-slate-900/80 border border-slate-800 backdrop-blur-xl rounded-3xl p-8 shadow-2xl shadow-black/60">
-          {/* Header & Icon */}
           <div className="flex flex-col items-center text-center mb-7">
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 mb-4 shadow-inner">
               <ShieldCheck className="w-7 h-7 stroke-[2.2]" />
@@ -44,7 +41,6 @@ export default function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Form nhập mã PIN */}
           <form action={handleLogin} className="space-y-4">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -68,8 +64,6 @@ export default function AdminLoginPage() {
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
           </form>
-
-          {/* Dòng bảo mật chân trang */}
           <div className="mt-6 text-center">
             <span className="text-[11px] text-slate-500 tracking-wide">
               Hệ thống bán lẻ • Tạp hóa Thúy
