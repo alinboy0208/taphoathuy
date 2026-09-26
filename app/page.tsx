@@ -17,14 +17,9 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Header cửa hàng: Xe đẩy trong vòng tròn trắng + Chữ hòa vào nền cam */}
-      {/* Header cửa hàng: Tăng chiều cao và phóng to logo */}
-     {/* Header cửa hàng: Logo hòa thẳng vào nền cam không viền hộp */}
-      {/* Header cửa hàng: Logo to rõ, hòa màu tuyệt đối không sợ lệch viền */}
       <header className="bg-amber-500 text-white shadow-sm sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-4 animate-logo-fade-in">
-            {/* Sử dụng ảnh gốc nền trắng kết hợp mix-blend-multiply để ăn khớp 100% màu nền cam */}
             <img
               src="/Picture1.png"
               alt="Tạp hóa Thúy"
@@ -42,22 +37,15 @@ export default async function HomePage() {
           </div>
         </div>
       </header>
-
-      {/* Nội dung chính */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <ClientStore initialProducts={products} />
       </main>
-
-      {/* Footer cuối trang */}
-      {/* FOOTER HIỆN ĐẠI CÓ TÍCH HỢP BẢN ĐỒ & ICON CHUẨN LUCIDE */}
 <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 pt-12 pb-8">
   <div className="max-w-6xl mx-auto px-4 sm:px-6">
     <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-slate-800/80 items-center">
       
-      {/* CỘT TRÁI (Chiếm 7 cột): Thông tin quán & Giờ mở cửa */}
       <div className="md:col-span-7 space-y-5">
         <div className="flex items-center gap-3">
-          {/* Logo xe đẩy bo tròn đồng bộ */}
           <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 flex items-center justify-center">
              <img 
                src="/Picture2.png" 
@@ -80,10 +68,7 @@ export default async function HomePage() {
         <p className="text-xs sm:text-sm text-slate-400 leading-relaxed pr-0 md:pr-6">
           Chuyên cung cấp nhu yếu phẩm, đồ ăn vặt, nước giải khát giao tận cửa chỉ trong tích tắc. Uy tín, nhanh chóng và tận tâm.
         </p>
-
-        {/* Cụm thông tin liên hệ với Icon Vector chuyên nghiệp */}
         <div className="space-y-3 pt-1 text-xs sm:text-sm">
-          {/* Icon Địa chỉ */}
           <div className="flex items-start gap-3 text-slate-300">
             <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 shrink-0 mt-0.5">
               <MapPin className="w-4 h-4 stroke-[2.2]" />
@@ -93,8 +78,6 @@ export default async function HomePage() {
               <strong className="text-slate-200 font-semibold">119 ấp 5, Lê Văn Lương, Nhà Bè</strong>
             </div>
           </div>
-
-          {/* Icon Hotline */}
           <div className="flex items-start gap-3 text-slate-300">
             <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
               <PhoneCall className="w-4 h-4 stroke-[2.2]" />
@@ -109,8 +92,6 @@ export default async function HomePage() {
               </a>
             </div>
           </div>
-
-          {/* Icon Thời gian hoạt động */}
           <div className="flex items-start gap-3 text-slate-300">
             <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 shrink-0 mt-0.5">
               <Clock3 className="w-4 h-4 stroke-[2.2]" />
@@ -122,8 +103,6 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
-
-      {/* CỘT PHẢI (Chiếm 5 cột): Bản đồ Google Maps bo tròn */}
       <div className="md:col-span-5">
         <div className="relative group rounded-2xl overflow-hidden border border-slate-700/80 shadow-xl bg-slate-800/50 backdrop-blur-sm p-1.5 transition-all duration-300 hover:border-amber-500/50">
           <div className="w-full h-48 sm:h-52 rounded-xl overflow-hidden relative">
@@ -140,7 +119,6 @@ export default async function HomePage() {
             ></iframe>
           </div>
 
-          {/* Dải điều hướng chỉ đường bên dưới iframe */}
           <div className="px-2.5 py-2 flex justify-between items-center text-[11px] text-slate-400">
             <span className="flex items-center gap-1">
               <MapPin className="w-3 h-3 text-amber-500" />
@@ -160,8 +138,6 @@ export default async function HomePage() {
       </div>
 
     </div>
-
-    {/* DÒNG BẢN QUYỀN CHÂN TRANG */}
     <div className="pt-6 text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
       <p>© {new Date().getFullYear()} Tạp Hóa Thúy. Tất cả quyền được bảo lưu.</p>
       <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
